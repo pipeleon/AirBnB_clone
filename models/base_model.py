@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 """Base Model Class"""
+from __future__ import annotations
 import datetime
 import uuid
+from models import storage
 
 
 class BaseModel():
@@ -19,6 +21,7 @@ class BaseModel():
             self.id = str(uuid.uuid4())
             self.created_at = datetime.datetime.now()
             self.updated_at = datetime.datetime.now()
+            storage.new(self)
 
     def __str__(self):
         """Method for the string representation"""
@@ -28,10 +31,11 @@ class BaseModel():
     def save(self):
         """Public instance methods that update the instance"""
         self.updated_at = datetime.datetime.now()
+        storage.save()
 
     def to_dict(self):
         """returns a dictionary containing all keys/values of a instance"""
-        new = self.__dict__
+        new = self.__dict__.copy()
         new["__class__"] = type(self).__name__
         new["created_at"] = (self.created_at).isoformat()
         new["updated_at"] = (self.updated_at).isoformat()
