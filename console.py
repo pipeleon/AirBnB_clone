@@ -4,12 +4,16 @@
 from models.base_model import BaseModel #importo la clase que traigo de model
 import cmd
 from models import storage
-
+from models.user import User
+from models.city import City
+from models.amenity import Amenity
+from models.state import State
+from models.review import Review
+from models.place import Place
 class HBNBCommand(cmd.Cmd):
     """class for cmd """
     prompt = "(hbnb)"
     list_class = ["BaseModel", "User", "State", "City", "Place", "Amenity", "Review"]
-
 
     def do_quit(self, variable):
         """Quit command to exit the program"""
