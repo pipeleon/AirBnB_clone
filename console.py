@@ -16,6 +16,7 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     list_class = ["BaseModel", "User", "State", "City", "Place", "Amenity", "Review"]
     list_atrr = ["id", "created_at", "updated_at"]
+    list_prefix = ["quit", "EOF", "create", "show", "destroy", "all", "update"]
 
     def do_quit(self, variable):
         """Quit command to exit the program"""
@@ -132,6 +133,13 @@ class HBNBCommand(cmd.Cmd):
                             storage.save()
                 else:
                     print("** no instance found **")
+
+    def precmd(self, line):
+        a = line.split()
+        if a[0] not in self.list_prefix and "." in a[0]:
+            b = a[0].split(".")            
+            line = b[1].strip("()") + " " + b[0]
+        return super().precmd(line)
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
