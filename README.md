@@ -37,9 +37,9 @@ Commands | Description | Usage
 ## Tests
 We've created tests to verify the stability and functionality of the console and classes created. If there is a desire to run said tests, while in the AirBnB directory running the following command will execute the test modules that are in the test/test_models/ directory
 ```python3 -m unittest discover tests ```
-## Bugs
-+ No known bugs at this time.
-<img src="https://holbertonintranet.s3.amazonaws.com/uploads/medias/2018/6/815046647d23428a14ca.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARDDGGGOU5BHMTQX4%2F20220304%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20220304T190308Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=1a5af07f000023f3cb78adfa02fe78db4f12859a22775383aa9d7fe3df78afc7" style="height:10%;width:10%" />
+
+<img src="https://holbertonintranet.s3.amazonaws.com/uploads/medias/2018/6/815046647d23428a14ca.png" style="height:10%;width:10%" />
+
 ## Author
 * **FELIPE LEÓN**
 * **NELSON GALLEGO**
