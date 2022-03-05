@@ -10,18 +10,18 @@ class FileStorage():
     __objects = {}
 
     def all(self):
-        """returns the dictionary __objects"""
+        """Returns the dictionary __objects"""
         return self.__objects
-    
+
     def new(self, obj):
-        """sets in __objects the obj with key"""
+        """Sets in __objects the obj with key"""
         (self.__objects)["{}.{}".format(type(obj).__name__, obj.id)] = obj
-    
+
     def save(self):
         """Save the variable __object into a Json string in a file"""
         new = {}
         for k, v in self.__objects.items():
-            new[k] = v.to_dict() 
+            new[k] = v.to_dict()
         with open(self.__file_path, "w", encoding="utf-8") as f:
             f.write(json.dumps(new))
 
@@ -36,7 +36,7 @@ class FileStorage():
         from models.place import Place
 
         if path.exists(self.__file_path):
-             with open(self.__file_path, "r", encoding="utf-8") as f:
-                 loaded = json.loads(f.read())
-             for k, v in loaded.items():
+            with open(self.__file_path, "r", encoding="utf-8") as f:
+                loaded = json.loads(f.read())
+            for k, v in loaded.items():
                 self.__objects[k] = eval(v["__class__"])(**v)

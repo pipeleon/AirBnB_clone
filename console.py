@@ -2,7 +2,7 @@
 """console.py contains the entry point of the command interprete"""
 import cmd
 from models import storage
-from models.base_model import BaseModel #importo la clase que traigo de model
+from models.base_model import BaseModel
 from models.user import User
 from models.city import City
 from models.amenity import Amenity
@@ -14,7 +14,8 @@ from models.place import Place
 class HBNBCommand(cmd.Cmd):
     """class for cmd """
     prompt = "(hbnb) "
-    list_class = ["BaseModel", "User", "State", "City", "Place", "Amenity", "Review"]
+    list_class = [
+        "BaseModel", "User", "State", "City", "Place", "Amenity", "Review"]
     list_atrr = ["id", "created_at", "updated_at"]
     list_prefix = ["quit", "EOF", "create", "show", "destroy", "all", "update"]
 
@@ -31,54 +32,53 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        """Creates a new instance of BaseModel, saves it
-            Exceptions:
-                SyntaxError: when there is no args given
-                NameError: when there is no object taht has the name
-        """
+        """Creates a new instance of BaseModel, saves it"""
         if arg == "":
             print("** class name missing **")
         elif arg not in self.list_class:
             print("** class doesn't exist **")
         else:
-            _object = eval(arg + "()")#esto es para evaluar la clase y lo guarde, ver punto 5
-            _object.save()#se guarda la instancia creada
-            print(_object.id)#se imprime la instancia creada
+            _object = eval(arg + "()")
+            _object.save()
+            print(_object.id)
 
     def do_show(self, arg):
-            """Prints the string representation of an instance based on the class name and id"""
-            arg = arg.split() #convertimos cadena en lista
-            if len(arg) == 0:
-                print("** class name missing **")
-            elif arg[0] not in self.list_class:#se evalua si hay una clase
-                print("** class doesn't exist **")
-            elif len(arg) == 1: # evalua si no tiene id
-                print("** instance id missing **")
+        """
+        Prints the string representation of an instance
+        """
+        arg = arg.split()
+        if len(arg) == 0:
+            print("** class name missing **")
+        elif arg[0] not in self.list_class:
+            print("** class doesn't exist **")
+        elif len(arg) == 1:
+            print("** instance id missing **")
+        else:
+            k = "{}.{}".format(arg[0], arg[1])
+            if k in storage.all().keys():
+                print(storage.all()[k])
             else:
-                k = "{}.{}".format(arg[0], arg[1])
-                if k in storage.all().keys():#recorro las llaves
-                    print(storage.all()[k])# si la encuentra la imprime
-                else:
-                    print("** no instance found **")
-    
+                print("** no instance found **")
+
     def do_destroy(self, arg):
-            """Deletes an instance based on the class name and id"""
-            arg = arg.split() #convertimos cadena en lista
-            if len(arg) == 0:
-                print("** class name missing **")
-            elif arg[0] not in self.list_class:#se evalua si hay una clase
-                print("** class doesn't exist **")
-            elif len(arg) == 1: # evalua si no tiene id
-                print("** instance id missing **")
+        """Deletes an instance based on the class name and id"""
+        arg = arg.split()
+        if len(arg) == 0:
+            print("** class name missing **")
+        elif arg[0] not in self.list_class:
+            print("** class doesn't exist **")
+        elif len(arg) == 1:
+            print("** instance id missing **")
+        else:
+            k = "{}.{}".format(arg[0], arg[1])
+            if k in storage.all().keys():
+                del storage.all()[k]
+                storage.save()
             else:
-                k = "{}.{}".format(arg[0], arg[1])
-                if k in storage.all().keys():#recorro las llaves
-                    del storage.all()[k]# si la encuentra la imprime
-                    storage.save()
-                else:
-                    print("** no instance found **")
-    
+                print("** no instance found **")
+
     def do_all(self, arg):
+        """Show a list of total object of specify class"""
         everything = []
         arg = arg.split()
         if len(arg) == 0:
@@ -94,52 +94,79 @@ class HBNBCommand(cmd.Cmd):
                     if c[0] == arg[0]:
                         everything.append(str(v))
                 print(everything)
-    
+
     def do_update(self, arg):
-            """Updates an instance based on the class name and id by adding or updating attribute"""
-            arg = arg.split() #convertimos cadena en lista
-            if len(arg) == 0:
-                print("** class name missing **")
-            elif arg[0] not in self.list_class:#se evalua si hay una clase
-                print("** class doesn't exist **")
-            elif len(arg) == 1: # evalua si no tiene id
-                print("** instance id missing **")
-            else:
-                k = "{}.{}".format(arg[0], arg[1])
-                if k in storage.all().keys():#recorro las llaves
-                    if len(arg) == 2:
-                        print("** attribute name missing **")
-                    elif len(arg) == 3:
-                        print("** value missing **")
-                    else:
-                        if arg[2] in self.list_atrr:
-                            pass
-                        else:
-                            if arg[3][0] == "\"":
-                                v = arg[3].lstrip('\"')
-                                if arg[3][-1] == "\"":
-                                    v = arg[3].strip('\"')
-                                else:
-                                    i = 1
-                                    while True:
-                                        if arg[3 + i][-1] == "\"":
-                                            v += " " + arg[3 + i].strip('\"')
-                                            break
-                                        v += " " + arg[3 + i]
-                                        i += 1
-                            else:
-                                v = arg[3]                       
-                            setattr(storage.all()[k], arg[2], v)
-                            storage.save()
+        """Updates an instance by adding or updating attribute"""
+        arg = arg.split()
+        if len(arg) == 0:
+            print("** class name missing **")
+        elif arg[0] not in self.list_class:
+            print("** class doesn't exist **")
+        elif len(arg) == 1:
+            print("** instance id missing **")
+        else:
+            k = "{}.{}".format(arg[0], arg[1])
+            if k in storage.all().keys():
+                if len(arg) == 2:
+                    print("** attribute name missing **")
+                elif len(arg) == 3:
+                    print("** value missing **")
                 else:
-                    print("** no instance found **")
+                    if arg[2] in self.list_atrr:
+                        pass
+                    else:
+                        if arg[3][0] == "\"":
+                            v = arg[3].lstrip('\"')
+                            if arg[3][-1] == "\"":
+                                v = arg[3].strip('\"')
+                            else:
+                                i = 1
+                                while True:
+                                    if arg[3 + i][-1] == "\"":
+                                        v += " " + arg[3 + i].strip('\"')
+                                        break
+                                    v += " " + arg[3 + i]
+                                    i += 1
+                        else:
+                            v = arg[3]
+                        setattr(storage.all()[k], arg[2], v)
+                        storage.save()
+            else:
+                print("** no instance found **")
+
+    def do_count(self, arg):
+        """Return numer of object of any class"""
+        arg = arg.split()
+        if len(arg) == 0:
+            pass
+        else:
+            if arg[0] not in self.list_class:
+                print("** class doesn't exist **")
+            else:
+                cont = 0
+                for k, v in storage.all().items():
+                    c = k.split(".")
+                    if c[0] == arg[0]:
+                        cont += 1
+                print(cont)
 
     def precmd(self, line):
+        """Modify the line command before run it if necesary"""
         a = line.split()
         if a[0] not in self.list_prefix and "." in a[0]:
-            b = a[0].split(".")            
-            line = b[1].strip("()") + " " + b[0]
+            b = a[0].split(".")
+            if "()" in b[1]:
+                line = b[1].strip("()") + " " + b[0]
+            else:
+                c = b[1].split("(")
+                line = c[0] + " " + b[0] + " " + c[1].strip('\"),')
+                if len(a) >= 2:
+                    line += " " + a[1].strip('\"),')
+                if len(a) >= 3:
+                    line += " " + a[2].strip('\"),')
         return super().precmd(line)
 
+
 if __name__ == '__main__':
+    """Main function for the loop"""
     HBNBCommand().cmdloop()
