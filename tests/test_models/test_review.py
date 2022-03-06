@@ -47,25 +47,25 @@ class TestReview(unittest.TestCase):
 
     def test_to_dict_values(self):
         """values in dict returned from to_dict are correct"""
-        formato = "%Y-%m-%dT%H:%M:%S.%f"
+        format_date = "%Y-%m-%dT%H:%M:%S.%f"
         review = Review()
         di = review.to_dict()
         self.assertEqual(di["__class__"], "Review")
         self.assertEqual(type(di["created_at"]), str)
         self.assertEqual(type(di["updated_at"]), str)
-        self.assertEqual(di["created_at"], review.created_at.strftime(formato))
-        self.assertEqual(di["updated_at"], review.updated_at.strftime(formato))
+        self.assertEqual(di["created_at"], review.created_at.strftime(format_date))
+        self.assertEqual(di["updated_at"], review.updated_at.strftime(format_date))
 
     def test_to_dict_creates_dict(self):
         """to_dict creates a dictionary with the appropriate attributes"""
         review = Review()
-        diccionario = review.to_dict()
-        self.assertEqual(type(diccionario), dict)
-        for Atributo in review.__dict__:
-            self.assertTrue(Atributo in diccionario)
-            self.assertTrue("__class__" in diccionario)
+        dictionary = review.to_dict()
+        self.assertEqual(type(dictionary), dict)
+        for Attribut in review.__dict__:
+            self.assertTrue(Attribut in dictionary)
+            self.assertTrue("__class__" in dictionary)
 
-    def test_instancia(self):
+    def test_instance(self):
         """Try instantiating the Review class"""
 
         review = Review()
