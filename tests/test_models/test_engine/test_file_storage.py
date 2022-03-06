@@ -1,70 +1,103 @@
 #!/usr/bin/python3
-"""
-unittest suite for model/engine/file_storage.py
-"""
+"""Unit test for the module User"""
 import unittest
-import sys
 import os
 import json
-from models import storage
+from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+from models import storage
 
 
+class Test_FileStorage(unittest.TestCase):
+    """Test for the class FileStorage"""
 
-class TestFileStorageClass(unittest.TestCase):
-    """class TestFileStorageClass"""
+    instance1 = FileStorage()
+    file = storage._FileStorage__file_path
+    storage = FileStorage()
 
-    def test_save_file(self):
-        """tests save method makes file"""
-        m = BaseModel()
-        m.save()
-        self.assertEqual(True, os.path.isfile('file.json'))
-
-    def test_save_file_size(self):
-        """tests save method makes non_empty file"""
-        m = BaseModel()
-        m.save()
-        self.assertEqual(True, os.stat('file.json').st_size != 0)
-
-    def test_all_file_dictionary(self):
-        """tests all method returns dictionary"""
-        m = BaseModel()
-        m.save()
-        obj = storage.all()
-        self.assertEqual(dict, type(obj))
-
-    def test_all_file_dictionary_objects(self):
-        """tests reload method returns dictionary of objects"""
-        m = BaseModel()
-        m.save()
-        all_objs = storage.all()
-        for obj_key in all_objs.keys():
-            obj = all_objs[obj_key]
-            break
-        self.assertEqual(True, issubclass(type(obj), type(BaseModel())))
-
-    def test_reload_file_dictionary(self):
-        """tests reload method returns dictionary"""
-        m = BaseModel()
-        m.save()
-        storage.reload()
-        obj = storage.all()
-        self.assertEqual(dict, type(obj))
-
-    def test_reload_file_dictionary_objects(self):
-        """tests reload method returns dictionary of objects"""
-        m = BaseModel()
-        m.save()
-        storage.reload()
-        all_objs = storage.all()
-        for obj_key in all_objs.keys():
-            obj = all_objs[obj_key]
-            break
-        self.assertEqual(True, issubclass(type(obj), type(BaseModel())))
+    def test_all(self):
+        """Test for the method all()"""
+        self.assertIn('all', dir(self.instance1))
+        self.assertIsInstance(self.instance1, FileStorage)
+        dictt = storage.all()
+        self.assertEqual(type(dictt), dict)
 
     def test_new(self):
-        """tests new method adds new obj to dictionary"""
-        m = BaseModel()
-        storage.new(m)
-        obj = storage.all()
-        self.assertEqual(obj["{}.{}".format("BaseModel", m.id)], m)
+        """Test for the method new()"""
+        self.assertIn('new', dir(self.instance1))
+
+    def test_save(self):
+        """Test for the method save()"""
+        self.assertIn('save', dir(self.instance1))
+        self.storage.save()
+        self.assertTrue(os.path.isfile(self.file))
+
+    def test_save2(self):
+        '''Test saving a instances of each type'''
+        base = BaseModel()
+        storage.new(base)
+
+        user = User()
+        storage.new(user)
+
+        state = State()
+        storage.new(state)
+
+        place = Place()
+        storage.new(place)
+
+        city = City()
+        storage.new(city)
+
+        amenity = Amenity()
+        storage.new(amenity)
+
+        review = Review()
+        storage.new(review)
+
+        storage.save()
+
+        with open(self.file) as f:
+            string = f.read()
+            self.assertIn("BaseModel." + base.id, string)
+            self.assertIn("User." + user.id, string)
+            self.assertIn("State." + state.id, string)
+            self.assertIn("Place." + place.id, string)
+            self.assertIn("City." + city.id, string)
+            self.assertIn("Amenity." + amenity.id, string)
+            self.assertIn("Review." + review.id, string)
+
+    def test_reload(self):
+        """Test for the method reload()"""
+        self.assertIn('reload', dir(self.instance1))
+
+        objects = storage.all()
+
+        base = BaseModel()
+        user = User()
+        state = State()
+        place = Place()
+        city = City()
+        amenity = Amenity()
+        review = Review()
+
+        storage.save()
+        storage.reload()
+
+        self.assertIn("BaseModel." + base.id, objects.keys())
+        self.assertIn("User." + user.id, objects.keys())
+        self.assertIn("State." + state.id, objects.keys())
+        self.assertIn("Place." + place.id, objects.keys())
+        self.assertIn("City." + city.id, objects.keys())
+        self.assertIn("Amenity." + amenity.id, objects.keys())
+        self.assertIn("Review." + review.id, objects.keys())
+
+
+if __name__ == '__main__':
+    unittest.main()
