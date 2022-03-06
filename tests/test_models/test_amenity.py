@@ -53,9 +53,9 @@ class Test_Amenity(unittest.TestCase):
 
     def test_amenitytodict(self):
         """Test for the method to_dict"""
-        type_of_dict = str(type(self.instancia.to_dict()))
+        type_of_dict = str(type(self.instance.to_dict()))
         self.assertEqual(type_of_dict, "<class 'dict'>")
-        self.assertIn(self.instancia_nombre, self.data_base.keys())
+        self.assertIn(self.instance_nombre, self.data_base.keys())
 
 if __name__ == '__main__':
     unittest.main()
