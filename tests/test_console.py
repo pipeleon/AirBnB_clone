@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Modulo de pruebas para la clase Console"""
+"""Test module for the Console class"""
 from console import HBNBCommand
 from models.engine.file_storage import FileStorage
 import unittest
@@ -20,23 +20,23 @@ from models.base_model import BaseModel
 
 
 class TestConsole(unittest.TestCase):
-    """Pruebas de la consola"""
+    """Test console"""
 
-    def test_restablece(self):
-        """Restablece los datos de FileStorage."""
+    def test_reset(self):
+        """Reset the data of FileStorage."""
         FileStorage._FileStorage__objects = {}
         if os.path.isfile(FileStorage._FileStorage__file_path):
             os.remove(FileStorage._FileStorage__file_path)
 
     def test_setUp(self):
-        """Configura casos de prueba."""
+        """Configurate cases of test."""
         if os.path.isfile("file.json"):
             os.remove("file.json")
-        self.test_restablece()
+        self.test_reset()
 
     def test_class(self):
         """
-        Verifica si las clases requeridas estan o no
+        check if the class requereiment are or they are not
         """
         city1 = City()
         amenity1 = Amenity()
@@ -55,7 +55,7 @@ class TestConsole(unittest.TestCase):
 
     def test_father(self):
         """
-        Verifica si todas las clases heredan bien :v
+        Check if every class inherit good
         """
         city1 = City()
         amenity1 = Amenity()
