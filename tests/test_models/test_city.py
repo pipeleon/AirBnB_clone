@@ -6,6 +6,7 @@ from models.city import City
 from models import storage
 from models.base_model import BaseModel
 
+
 class Test_City(unittest.TestCase):
     """
         unitesst for city class

@@ -10,6 +10,7 @@ from datetime import datetime
 from unittest import mock
 import models
 
+
 class TestUser(unittest.TestCase):
     """Prueba clase User"""
     def issub_class(self):

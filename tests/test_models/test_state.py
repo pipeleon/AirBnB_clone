@@ -1,4 +1,3 @@
-
 #!/usr/bin/python3
 """Test for State class"""
 from models.base_model import BaseModel

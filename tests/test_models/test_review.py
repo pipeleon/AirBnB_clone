@@ -48,13 +48,13 @@ class TestReview(unittest.TestCase):
     def test_to_dict_values(self):
         """values in dict returned from to_dict are correct"""
         format_date = "%Y-%m-%dT%H:%M:%S.%f"
-        review = Review()
-        di = review.to_dict()
+        rev = Review()
+        di = rev.to_dict()
         self.assertEqual(di["__class__"], "Review")
         self.assertEqual(type(di["created_at"]), str)
         self.assertEqual(type(di["updated_at"]), str)
-        self.assertEqual(di["created_at"], review.created_at.strftime(format_date))
-        self.assertEqual(di["updated_at"], review.updated_at.strftime(format_date))
+        self.assertEqual(di["creat_at"], rev.created_at.strftime(format_date))
+        self.assertEqual(di["updat_at"], rev.updated_at.strftime(format_date))
 
     def test_to_dict_creates_dict(self):
         """to_dict creates a dictionary with the appropriate attributes"""
