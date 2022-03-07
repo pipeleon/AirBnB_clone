@@ -19,11 +19,11 @@ class HBNBCommand(cmd.Cmd):
     list_atrr = ["id", "created_at", "updated_at"]
     list_prefix = ["quit", "EOF", "create", "show", "destroy", "all", "update"]
 
-    def do_quit(self, variable):
+    def do_quit(self, arg):
         """Quit command to exit the program"""
         exit()
 
-    def do_EOF(self, variable):
+    def do_EOF(self, arg):
         """EOF command to exit the program"""
         exit()
 
