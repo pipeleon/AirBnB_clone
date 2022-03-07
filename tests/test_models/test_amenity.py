@@ -19,7 +19,7 @@ class Test_Amenity(unittest.TestCase):
         """Test for the method __init__"""
         features = self.data_base.get(self.instance_name).to_dict()
         clase_a = "<class 'models.amenity.Amenity'>"
-        times = "<class 'datetime.datime'>"
+        times = "<class 'datetime.datetime'>"
 
         # Data types
         self.assertEqual(str(type(self.instance)), clase_a)
@@ -28,7 +28,7 @@ class Test_Amenity(unittest.TestCase):
         self.assertEqual(str(type(self.instance.updated_at)), times)
 
         # Basic features storage
-        self.assertIn(self.instance_nombre, self.data_base.keys())
+        self.assertIn(self.instance_name, self.data_base.keys())
         self.assertIn('created_at', features.keys())
         self.assertIn('updated_at', features.keys())
         self.assertIn('id', features.keys())
@@ -55,7 +55,7 @@ class Test_Amenity(unittest.TestCase):
         """Test for the method to_dict"""
         type_of_dict = str(type(self.instance.to_dict()))
         self.assertEqual(type_of_dict, "<class 'dict'>")
-        self.assertIn(self.instance_nombre, self.data_base.keys())
+        self.assertIn(self.instance_name, self.data_base.keys())
 
 if __name__ == '__main__':
     unittest.main()
